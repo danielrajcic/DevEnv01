@@ -25,7 +25,7 @@ function submitForm(username, userpw) {
         if (result.status === "error") {
             console.log("something went wrong");
             fetchOutput.classList.add("bg-red-600", "text-white");
-            fetchOutput.innerHTML = `<img class="h-4 absolute top-3 right-3" src="https://img.icons8.com/ios-glyphs/60/delete-sign.png" @click="hide" alt="close"/>status: ${result.status}`;
+            fetchOutput.innerHTML = `<img class="h-4 absolute top-3 right-3" src="https://img.icons8.com/ios-glyphs/60/ffffff/delete-sign.png" @click="hide" alt="close"/>status: ${result.status}`;
         }   else {
             jwt = result.jwt.toString();
             const jwtOut = JSON.stringify(decode(jwt));
