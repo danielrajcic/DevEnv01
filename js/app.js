@@ -60,7 +60,7 @@ function loginForm() {
                     fetchOutput.classList.add("bg-red-600", "text-white");
                     this.fetchOutput = `<img class="h-4 absolute top-3 right-3 cursor-pointer" src="https://img.icons8.com/ios-glyphs/60/ffffff/delete-sign.png" @click="open=false" alt="close"/>Login failed, ${result.message}`;
                 }   else {
-                    this.open = true;
+                    this.open = false;
                     this.isFetching = false;
                     localStorage.setItem('userJWT', result.jwt.toString());
                     window.location.assign("/DevEnv01/src/dashboard.html");
