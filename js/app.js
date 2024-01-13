@@ -63,7 +63,7 @@ function loginForm() {
                     this.open = true;
                     this.isFetching = false;
                     localStorage.setItem('userJWT', result.jwt.toString());
-                    window.location.assign("/src/dashboard.html");
+                    window.location.assign("/DevEnv01/src/dashboard.html");
                 }
             })
             .catch(error => {
