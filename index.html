@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="./js/ui.js" defer></script>
-    <script src="https://unpkg.com/alpinejs" defer></script>
-    <script src="./js/fetch.js" defer></script>
+    
+    <script src="/js/app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         [x-cloak] {
@@ -30,14 +31,14 @@
             justify-content: space-evenly;
         }
     </style>
-    <title>Alpine Playground</title>
+    <title>Login</title>
 </head>
 <body class="bg-gray-200">
-    
-    <div class="container mx-auto mt-6 max-w-sm">
-        <h1 class="text-5xl mb-4">Alpine.js Demo</h1>
 
-        <div x-data="{username: '', password:''}">
+    <div class="container mx-auto mt-6 max-w-sm">
+        <h1 class="text-5xl mb-4">Login</h1>
+
+        <div x-data="loginForm()">
             <div class="w-full max-w-xs">
                 <form class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2" for="username">Username</label>
@@ -45,13 +46,12 @@
                     <label class="block text-gray-700 text-sm font-bold my-2 mb-2" for="password">Password</label>
                     <input class="shadow appearance-none border-2 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-blue-300" type="password" name="password" id="password" placeholder="******" x-model="password">
                     
-                    <!-- <div x-data="{open: true}"> -->
-                    <div x-data="dropdown()">
+                    <div>
                         <br>
-                        <button x-on:click="submitForm(username, password), show()" class="bg-slate-700 text-white px-4 py-2 rounded-xl">Submit</button>
+                        <button id="submitBtn" x-on:click.prevent="submitNewForm(username, password)" class="bg-slate-700 text-white px-4 py-2 rounded-xl" x-bind:disabled="isFetching">Login</button>
 
-                        <div x-show="open" x-transition.duration.700ms x-cloak id="xDiv">
-                            <p id="fetchOut" class="bg-gray-200 p-4 my-6 rounded relative" style="width:100%; word-wrap:break-word; display:inline-block;">
+                        <div x-show="open" x-transition.duration.500ms x-cloak id="xDiv">
+                            <p x-html="fetchOutput"" id="fetchOut" class="bg-gray-200 p-4 my-6 rounded relative" style="width:100%; word-wrap:break-word; display:inline-block;">
                             </p>
                         </div>
                     </div>
@@ -60,20 +60,6 @@
             </div>
         </div>
     </div>
-
-    <!-- <div x-data="counter" class="box-counter">
-        <span class="lbl-counter" :class="{'lbl-counter-red': count < 0, 'lbl-counter-blue': count > 0}"
-            x-text="count">0</span>
-        <div class="counter-btn">
-            <button type="button" class="btn-counter" @click="increment"> Increment </button>
-            <button type="button" class="btn-counter" @click="reset">Reset</button>
-            <button type="button" class="btn-counter" @click="decrement"> Decrement </button>
-        </div>
-    </div> -->
-
-    <script>
-        
-    </script>
 
 </body>
 </html>
