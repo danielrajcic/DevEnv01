@@ -4,17 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="/DevEnv01/js/app.js" defer></script>
+    <script src="/js/app.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+
+        .fancyLink {
+            background-image: linear-gradient(90deg, red, blue);
+            background-size: 0% 3px;
+            background-repeat: no-repeat;
+            background-position: left bottom;
+            text-decoration: none;
+            font-weight: 900;
+            transition: background-size 300ms ease;
+        }
+
+        .fancyLink:hover {
+            background-size: 100% 3px;
+        }
+
+    </style>
+
     <title>Dashboard </title>
 </head>
-<body>
-    <div
-    x-data="{ message: decode((localStorage.getItem('userJWT'))) }">
-        <div><strong>Name: </strong><span x-text="message.name"></span></div>
+<body x-data="{user: undefined}" x-init="(localStorage.getItem('userJWT'))? user = decode((localStorage.getItem('userJWT'))).name : user = 'Not logged in'">
+
+    
+    <div>
+        <div><strong>Name: </strong><span x-text="user"></span></div>
     </div>
+    <!-- <div
+    x-data="{ message: (localStorage.getItem('userJWT'))? decode((localStorage.getItem('userJWT'))).name : 'Not logged in' }">
+        <div><strong>Name: </strong><span x-text="message"></span></div>
+    </div> -->
+
+    <nav x-data="{ showUser: false, lockResize: false, showNav: false }" x-init="showNav=window.innerWidth > 768" x-on:keydown.escape.window="showUser = false" x-on:click.away.window="showUser = false" class="bg-white border-gray-200 dark:bg-gray-900">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <img class="h-10" src="https://img.icons8.com/bubbles/100/homeadvisor.png" alt="homeadvisor"/>
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Welcome</span>
+            </a>
+            <div class="flex items-center md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse" style="position: relative;">
+                <button type="button" class="flex text-sm bg-gray-800 rounded-full md:me-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600" id="user-menu-button" aria-expanded="false">
+                <span class="sr-only">Open user menu</span>
+                <img x-on:click.prevent="showUser = !showUser, ((window.innerWidth < 768)? showNav = false : showNav = showNav), lockResize = false" class="w-8 h-8 rounded-full" src="https://randomuser.me/api/portraits/men/22.jpg" alt="user photo">
+                </button>
+        
+                <!-- User Dropdown menu -->
+                <div x-show="showUser" x-transition.duration.250ms x-cloak class="z-50 my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow dark:bg-gray-700 dark:divide-gray-600" style="position: absolute; right: 20px; top: 20px;" id="user-dropdown">
+                <div class="px-4 py-3">
+                    <span class="block text-sm text-gray-900 dark:text-white" x-text="user">Bonnie Green</span>
+                    <span class="block text-sm  text-gray-500 truncate dark:text-gray-400">name@flowbite.com</span>
+                </div>
+                <ul class="py-2" aria-labelledby="user-menu-button">
+                    <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Dashboard</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Settings</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Projects</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">Sign out</a>
+                    </li>
+                </ul>
+                </div>
+        
+                <button x-on:click.prevent="showNav = !showNav, showUser = false, lockResize = !lockResize" data-collapse-toggle="navbar-user" type="button" class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-user" aria-expanded="false">
+                <span class="sr-only">Open main menu</span>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                </svg>
+                </button>
+            </div>
+    
+            <!-- Navigation menu -->
+            <div x-show="showNav" x-on:resize.window="(window.innerWidth > 768)? showNav = true : ((lockResize)? showNav = showNav : showNav = false)" x-cloak x-transition:enter.duration.500ms class="items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-user">
+            <!-- <div x-cloak x-bind:class="showNav ? '' : 'hidden' " x-transition.duration.800ms class="items-center justify-between w-full md:flex md:w-auto md:order-1" id="navbar-user"> -->
+                <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                    <li>
+                    <a href="#" class="block py-2 px-3 text-white bg-blue-700 rounded md:bg-transparent md:text-blue-700 md:p-0 md:dark:text-blue-500" aria-current="page">Home</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">About</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Services</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Pricing</a>
+                    </li>
+                    <li>
+                    <a href="#" class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Contact</a>
+                    </li>
+                </ul>
+                
+            </div>
+        </div>
+        <!-- <div x-show="true" style="position: absolute; top: 600px; right: 200px;">
+            <span x-text="showNav"></span><br>
+            <span id="iW"></span>
+        </div> -->
+    </nav>
+
+    <script>
+        // window.onresize = () => {
+        //     document.querySelector("#iW").textContent = `${window.innerWidth}`;
+        // };
+
+
+        window.onload = function () { 
+            const anchorTags = document.querySelectorAll('a'); 
+            anchorTags.forEach(function(a){
+                a.addEventListener('click', function(ev){
+                    ev.preventDefault();
+                })
+            });  
+            
+            const dropdownEl = document.querySelector('[data-dropdown-toggle]'); 
+            if (dropdownEl) {
+                dropdownEl.click();
+            } 
+            const modalEl = document.querySelector('[data-modal-toggle]'); 
+            if(modalEl) {
+                modalEl.click(); 
+            }  
+            const dateRangePickerEl = document.querySelector('[data-rangepicker] input'); 
+            if (dateRangePickerEl) { 
+                dateRangePickerEl.focus(); 
+            } 
+            const drawerEl = document.querySelector('[data-drawer-show]'); 
+            if (drawerEl) { 
+                drawerEl.click(); 
+            }
+        }
+    </script>
 
 </body>
 </html>
