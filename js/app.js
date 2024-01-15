@@ -3,7 +3,7 @@ let jwt = "";
 function decode(token) {
 
     const currentDate = new Date();
-    console.log("current time: ", currentDate.getTime());
+    // console.log("current time: ", currentDate.getTime());
 
     var base64Url = token.split(".")[1];
     var base64 = decodeURIComponent(atob(base64Url).split("").map((c) => {
@@ -14,7 +14,7 @@ function decode(token) {
     const jwtPayload = JSON.parse(base64);
     const iat = jwtPayload.iat;
     const iatDate = new Date(iat).getFullYear();
-    console.log("IAT Year: ", iatDate);
+    // console.log("IAT Year: ", iatDate);
     // ======================
 
 
@@ -57,7 +57,7 @@ function loginForm() {
                     this.open = true;
                     this.isFetching = false;
                     document.querySelector("#login").reset();
-                    localStorage.setItem('userJWT', "");
+                    localStorage.clear();
                     fetchOutput.classList.add("bg-red-600", "text-white");
                     this.fetchOutput = `<img class="h-4 absolute top-3 right-3 cursor-pointer" src="https://img.icons8.com/ios-glyphs/60/ffffff/delete-sign.png" @click="open=false" alt="close"/>Login failed, ${result.message}`;
                 }   else {
